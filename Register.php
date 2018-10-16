@@ -46,7 +46,10 @@
     </div>
     <div class="container body-content">
         
+<?php
+include('Server.php'); // Includes Login Script
 
+?>
 
 <h2>Create</h2>
 
