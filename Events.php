@@ -7,21 +7,21 @@
     <link href="./Events - index_files/bootstrap.css" rel="stylesheet">
 <link href="./Events - index_files/site.css" rel="stylesheet">
 <link href="./Events - index_files/bootstrap-chosen.css" rel="stylesheet">
-<link href="./Events - index_files/jquery.dataTables.css" rel="stylesheet">
+<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <script src="./Events - index_files/modernizr-2.6.2.js.download"></script>
 
     <script src="./Events - index_files/jquery-1.10.2.js.download"></script>
 <script src="./Events - index_files/chosen.jquery.js.download"></script>
-<script src="./Events - index_files/jquery.dataTables.js.download"></script>
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
 
 </head>
 
-<?php
+
 <body style="">
     
-    <div class="navbar navbar-inverse navbar-fixed-top">
+     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -29,69 +29,131 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="http://localhost:61828/Home">Application name</a>
+                <a class="navbar-brand" href="events.php">Event Holders Inc</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="Register.php">People</a></li>
-                    <li><a href="Events.php">Events</a></li>
+                    <li><a href="events.php">Events</a></li>
                     
                 </ul>
-                
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="Register.php" id="registerLink">Register</a></li>
-        <li><a href="Login.php" id="loginLink">Log in</a></li>
+    
+<?php
+include 'Server.php';
+	
+   if ($_SESSION['Name'] == ""){
+	   
+	   echo ' <ul class="nav navbar-nav navbar-right">
+        <li><a href="register.php" id="registerLink">Register</a></li>
+        <li><a href="login.php" id="loginLink">Log in</a></li>
     </ul>
 
             </div>
         </div>
     </div>
     <div class="container body-content">
+';
+	   
+   }else {
+	   
+	   echo ' <ul class="nav navbar-nav navbar-right">
+        <li><a href="register.php" id="registerLink">Register</a></li>
+        <li><a> Welcome '.$_SESSION['Name'].' </a></li>
+    </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+';
+	   
+	   
+   }
 
 
+echo '	
 <h2>Index</h2>
 
 
-<table class="table">
-    <tbody><tr>
+<table class="table" id="datatable">
+    <thead><tr>
         <th>
-            Name
+             Name
         </th>
         <th>
-            PersonName
+             Start date
         </th>
-        <th></th>
+        <th>
+			 End date
+		</th>
+		<th>
+		Event Creator
+		</th>
     </tr>
+	</thead>
+	<tbody>';
 
 	
-
-$servername = "localhost";
-$username = "username";
-$password = "password";
-$dbname = "ItechProjectDb";
 
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $stmt = $conn->prepare("SELECT Name, PersonName, CreatedOn FROM Events, People"); 
-    $stmt->execute();
+    
+	if ($_SESSION['Name'] == ""){
+		
+		//header("Location: login.php"); 
+		exit();
+		
+	} else {
+	
+$db_host = 'localhost';
+$db_user = 'root';
+$db_pass = ''; 
+$db_name = 'itecprojectdb';
+   
+$conn = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 
-    // set the resulting array to associative
-    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC); 
+if (!$conn) {
+    die ('Fail to connect to MySQL: ' . mysqli_connect_error());   
+}
 
-    foreach(new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) { 
-        echo $v;
+	$sql = 'SELECT EventName, StartDate, EndDate, Name 
+        FROM event
+		JOIN person ON event.PersonId = person.PersonId';
+		
+	$query = mysqli_query($conn, $sql);
+
+		
+	if (!$query) {
+		die ('SQL Error: ' . mysqli_error($conn));
+}
+    while($row = mysqli_fetch_array($query)) { 
+        echo '
+		<tr>
+			<td>
+				'.$row['EventName'].'
+			</td>
+			<td>
+				'.$row['StartDate'].'
+			</td>
+			<td>
+				'.$row['EndDate'].'
+			</td>
+			<td>
+				'.$row['Name'].'
+			</td>
+	</tr>
+		';
     }
 }
-catch(PDOException $e) {
-    echo "Error: " . $e->getMessage();
 }
-$conn = null;
-echo "</table>";
-	
+catch(PDOException $e) {
+    echo "Error!";
+}
 
-</tbody></table>
+echo '</tbody>
+	</table>';
+
 ?> 
+<?php include('errors.php'); ?>
+  <input type="button" name="Create Event" value="Create" class="btn btn-default" onclick="location.href='createEvent.php'" >
   
     </div>
 
@@ -99,7 +161,13 @@ echo "</table>";
     <script src="./Events - index_files/bootstrap.js.download"></script>
 <script src="./Events - index_files/respond.js.download"></script>
 
-    
+    <script>
+	
+	$(document).ready( function () {
+		$('#datatable').DataTable();
+	} );
+	
+	</script>
 
 
 </body></html>

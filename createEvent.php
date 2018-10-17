@@ -34,7 +34,12 @@
                     
                 </ul>
                 
-    <ul class="nav navbar-nav navbar-right">
+    <?php
+include 'Server.php';
+	
+   if ($_SESSION['Name'] == ""){
+	   
+	   echo ' <ul class="nav navbar-nav navbar-right">
         <li><a href="register.php" id="registerLink">Register</a></li>
         <li><a href="login.php" id="loginLink">Log in</a></li>
     </ul>
@@ -43,19 +48,34 @@
         </div>
     </div>
     <div class="container body-content">
-        
-<?php
-include('Server.php'); // Includes Login Script
+';
+	   
+   }else {
+	   
+	   echo ' <ul class="nav navbar-nav navbar-right">
+        <li><a href="register.php" id="registerLink">Register</a></li>
+        <li><a> Welcome '.$_SESSION['Name'].' </a></li>
+    </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+';
+	   
+	   
+   }
+
 
 ?>
 
 <h2>Create</h2>
 
 
-<form action="Register.php" method="post" novalidate="novalidate">
+<form action="createEvent.php" method="post" novalidate="novalidate">
 <?php include('errors.php'); ?>
   <div class="form-horizontal">
-        <h4>Person</h4>
+        <h4>Event</h4>
         <hr>
         
         <div class="form-group">
@@ -67,27 +87,28 @@ include('Server.php'); // Includes Login Script
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="email">Email</label>
+            <label class="control-label col-md-2" for="startDate">Start Date</label>
             <div class="col-md-10">
-                <input class="form-control text-box single-line" data-val-required="The Email field is required." id="email" name="email" type="text" value="">
-                <span class="field-validation-valid text-danger" data-valmsg-for="CreatedOn" data-valmsg-replace="true"></span>
+                <input class="form-control text-box single-line" data-val-required="This field is required!" id="startDate" name="startDate" type="date" value="">
+                <span class="field-validation-valid text-danger" data-valmsg-for="startDate" data-valmsg-replace="true"></span>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="password">Password</label>
+            <label class="control-label col-md-2" for="endDate">End Date</label>
             <div class="col-md-10">
-                <input class="form-control text-box single-line" data-val-required="The Password field is required." id="password" name="password" type="text" value="">
-                <span class="field-validation-valid text-danger" data-valmsg-for="password" data-valmsg-replace="true"></span>
+                <input class="form-control text-box single-line" data-val-required="This field is required!" id="endDate" name="endDate" type="date" value="">
+                <span class="field-validation-valid text-danger" data-valmsg-for="endDate" data-valmsg-replace="true"></span>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <button type="submit" name="reg_user" value="Register" class="btn btn-default">Register</button>
+                <button type="submit" name="Create_Event" value="Create" class="btn btn-default">Create</button>
             </div>
         </div>
     </div>
+		
 </form>
 
     </div>

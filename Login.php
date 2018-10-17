@@ -31,19 +31,17 @@ include('Server.php'); // Includes Login Script
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="http://localhost:61828/Home">Application name</a>
+                <a class="navbar-brand" href="events.php">Event Holders Inc</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="http://localhost:61828/Home">Home</a></li>
-                    <li><a href="http://localhost:61828/People">People</a></li>
-                    <li><a href="http://localhost:61828/Events">Events</a></li>
+                    <li><a href="events.php">Events</a></li>
                     
                 </ul>
                 
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="http://localhost:61828/Account/Register" id="registerLink">Register</a></li>
-        <li><a href="http://localhost:61828/Account/Login" id="loginLink">Log in</a></li>
+        <li><a href="register.php" id="registerLink">Register</a></li>
+        <li><a href="login.php" id="loginLink">Log in</a></li>
     </ul>
 
             </div>
